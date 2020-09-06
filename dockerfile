@@ -23,4 +23,5 @@ RUN	git init && git remote add origin https://github.com/ebiggers/libdeflate.git
 # Samtools Release 1.10 2019-12-06 https://github.com/samtools/samtools/tree/1.10
 WORKDIR ${SOFT}/git-samtools 
 RUN git init && git remote add origin https://github.com/samtools/samtools.git && git pull https://github.com/samtools/samtools.git 76877ea4e41cd9d9a7f045307485535c7da7422b && mkdir ${SOFT}/samtools_1.10 && autoreconf && ./configure --with-htslib=${SOFT}/htslib_1.10.2 --without-curses --prefix=${SOFT}/samtools_1.10 && make && make install && rm -fr ${SOFT}/git-samtools
-
+ENV SAMTOOLS ${SOFT}/samtools_1.10/bin/samtools
+#samtools: error while loading shared libraries: libhts.so.3: cannot open shared object file: No such file or directory
