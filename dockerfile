@@ -43,8 +43,9 @@ RUN git init \
 	&& git remote add origin https://github.com/samtools/htslib.git \
 	&& git pull https://github.com/samtools/htslib.git fd0f89554459b78c07303e2c8a42acacd6851b46 \
 	&& mkdir ${SOFT}/htslib_1.10.2 \
-	&& autoreconf \
-	&& ./configure --with-libdeflate=/usr/local/ --prefix=${SOFT}/htslib_1.10.2 \
+	&& autoheader \
+	&& autoconf \
+	&& ./configure --with-libdeflate=${SOFT}/libdeflate_1.6 CPPFLAGS=-I${SOFT}/libdeflate_1.6/include LDFLAGS=-L${SOFT}/libdeflate_1.6/lib --prefix=${SOFT}/htslib_1.10.2 \
 	&& make \
 	&& make install \
 	&& rm -fr ${SOFT}/git-htslib
