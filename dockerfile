@@ -33,8 +33,8 @@ RUN git init \
 	&& git remote add origin https://github.com/ebiggers/libdeflate.git \
 	&& git pull https://github.com/ebiggers/libdeflate.git 753d4a1a625efb478f845f1c4d3869a41f710ae5 \
 	&& mkdir ${SOFT}/libdeflate_1.6 \
-	&& make \
-	&& make install \
+	&& make --makefile=${SOFT}/git-libdeflate/Makefile \
+	&& make install PREFIX=${SOFT}/libdeflate_1.6\
 	&& rm -fr ${SOFT}/git-libdeflate
 
 # htslib 1.10.2 2019-12-19  
