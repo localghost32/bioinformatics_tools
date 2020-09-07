@@ -25,7 +25,8 @@ RUN apt-get update && apt-get install -y \
 	libssl-dev \
 	libncurses5-dev \
 	libtool \
-	autotools-dev
+	autotools-dev \
+	wget
 	
 # libdeflate v1.6 2020-05-13  
 WORKDIR ${SOFT}/git-libdeflate
@@ -38,29 +39,39 @@ RUN git init \
 	&& rm -fr ${SOFT}/git-libdeflate
 
 # htslib 1.10.2 2019-12-19  
-WORKDIR ${SOFT}/git-htslib
-RUN git init \
-	&& git remote add origin https://github.com/samtools/htslib.git \
-	&& git pull https://github.com/samtools/htslib.git fd0f89554459b78c07303e2c8a42acacd6851b46 \
-	&& mkdir ${SOFT}/htslib_1.10.2 \
-	&& autoheader \
-	&& autoconf \
-	&& ./configure --with-libdeflate=${SOFT}/libdeflate_1.6 CPPFLAGS=-I${SOFT}/libdeflate_1.6/include LDFLAGS=-L${SOFT}/libdeflate_1.6/lib --prefix=${SOFT}/htslib_1.10.2 \
-	&& make \
-	&& make install \
-	&& rm -fr ${SOFT}/git-htslib
+#WORKDIR ${SOFT}/git-htslib
+#RUN git init \
+#	&& git remote add origin https://github.com/samtools/htslib.git \
+#	&& git pull https://github.com/samtools/htslib.git fd0f89554459b78c07303e2c8a42acacd6851b46 \
+#	&& mkdir ${SOFT}/htslib_1.10.2 \
+#	&& autoheader \
+#	&& autoconf \
+#	&& ./configure --with-libdeflate=${SOFT}/libdeflate_1.6 CPPFLAGS=-I${SOFT}/libdeflate_1.6/include LDFLAGS=-L${SOFT}/libdeflate_1.6/lib --prefix=${SOFT}/htslib_1.10.2 \
+#	&& make \
+#	&& make install \
+#	&& rm -fr ${SOFT}/git-htslib
 
 # Samtools Release 1.10 2019-12-06  
-WORKDIR ${SOFT}/git-samtools
-RUN git init \
-	&& git remote add origin https://github.com/samtools/samtools.git \
-	&& git pull https://github.com/samtools/samtools.git 76877ea4e41cd9d9a7f045307485535c7da7422b \
+WORKDIR ${SOFT}/tar-samtools
+RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.10.tar.bz2 \
 	&& mkdir ${SOFT}/samtools_1.10 \
-	&& autoreconf \
-	&& ./configure --with-htslib=${SOFT}/htslib_1.10.2 --prefix=${SOFT}/samtools_1.10 \
+	&& tar -xvjf ${SOFT}/tar-samtools/samtools-1.10.tar.bz2
+WORKDIR ${SOFT}/tar-samtools/samtools-1.10
+RUN ./configure --with-libdeflate=yes CPPFLAGS=-I${SOFT}/libdeflate_1.6/include LDFLAGS=-L${SOFT}/libdeflate_1.6/lib --without-curses --prefix=${SOFT}/samtools_1.10 \
 	&& make \
-	&& make install \
-	&& rm -fr ${SOFT}/git-samtools
+	&& make install
+
+
+# Samtools Release 1.10 2019-12-06
+#WORKDIR ${SOFT}/git-samtools
+#RUN git init \
+#	&& git remote add origin https://github.com/samtools/samtools.git \
+#	&& git pull https://github.com/samtools/samtools.git 76877ea4e41cd9d9a7f045307485535c7da7422b \
+#	&& autoreconf \
+#	&& ./configure --with-htslib=${SOFT}/htslib_1.10.2 --prefix=${SOFT}/samtools_1.10 \
+#	&& make \
+#	&& make install \
+#	&& rm -fr ${SOFT}/git-samtools
 ENV SAMTOOLS ${SOFT}/samtools_1.10/bin/samtools
 #samtools: error while loading shared libraries: libhts.so.3: cannot open shared object file: No such file or directory
 
