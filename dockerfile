@@ -35,7 +35,7 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.
 	&& tar -xvjf ${SOFT}/tar-samtools/samtools-1.10.tar.bz2 \
 	&& cd ${SOFT}/tar-samtools/samtools-1.10 \
 	&& ./configure --without-curses --prefix=${SOFT}/samtools_1.10 \
-	&& make all all-htslib\
+	&& make all all-htslib \
 	&& make install install-htslib
 
 ENV SAMTOOLS ${SOFT}/samtools_1.10/bin/samtools
