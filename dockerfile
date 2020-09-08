@@ -29,14 +29,14 @@ RUN apt-get update && apt-get install -y \
 	wget
 	
 # libdeflate v1.6 2020-05-13  
-WORKDIR ${SOFT}/git-libdeflate
-RUN git init \
-	&& git remote add origin https://github.com/ebiggers/libdeflate.git \
-	&& git pull https://github.com/ebiggers/libdeflate.git 753d4a1a625efb478f845f1c4d3869a41f710ae5 \
-	&& mkdir ${SOFT}/libdeflate_1.6 \
-	&& make --makefile=${SOFT}/git-libdeflate/Makefile \
-	&& make install PREFIX=${SOFT}/libdeflate_1.6\
-	&& rm -fr ${SOFT}/git-libdeflate
+#WORKDIR ${SOFT}/git-libdeflate
+#RUN git init \
+#	&& git remote add origin https://github.com/ebiggers/libdeflate.git \
+#	&& git pull https://github.com/ebiggers/libdeflate.git 753d4a1a625efb478f845f1c4d3869a41f710ae5 \
+#	&& mkdir ${SOFT}/libdeflate_1.6 \
+#	&& make --makefile=${SOFT}/git-libdeflate/Makefile \
+#	&& make install PREFIX=${SOFT}/libdeflate_1.6\
+#	&& rm -fr ${SOFT}/git-libdeflate
 
 # htslib 1.10.2 2019-12-19  
 #WORKDIR ${SOFT}/git-htslib
@@ -47,7 +47,7 @@ RUN git init \
 #	&& autoheader \
 #	&& autoconf \
 #	&& ./configure --with-libdeflate=${SOFT}/libdeflate_1.6 CPPFLAGS=-I${SOFT}/libdeflate_1.6/include LDFLAGS=-L${SOFT}/libdeflate_1.6/lib --prefix=${SOFT}/htslib_1.10.2 \
-#	&& make \
+#	&& make all\
 #	&& make install \
 #	&& rm -fr ${SOFT}/git-htslib
 
@@ -55,10 +55,10 @@ RUN git init \
 WORKDIR ${SOFT}/tar-samtools
 RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.10.tar.bz2 \
 	&& mkdir ${SOFT}/samtools_1.10 \
-	&& tar -xvjf ${SOFT}/tar-samtools/samtools-1.10.tar.bz2
-WORKDIR ${SOFT}/tar-samtools/samtools-1.10
-RUN ./configure --with-libdeflate=yes CPPFLAGS=-I${SOFT}/libdeflate_1.6/include LDFLAGS=-L${SOFT}/libdeflate_1.6/lib --without-curses --prefix=${SOFT}/samtools_1.10 \
-	&& make \
+	&& tar -xvjf ${SOFT}/tar-samtools/samtools-1.10.tar.bz2 \
+	&& cd ${SOFT}/tar-samtools/samtools-1.10 \
+	&& ./configure --without-curses --prefix=${SOFT}/samtools_1.10 \
+	&& make all all-htslib\
 	&& make install install-htslib
 
 # Samtools Release 1.10 2019-12-06
