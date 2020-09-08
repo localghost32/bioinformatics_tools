@@ -59,7 +59,7 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.
 WORKDIR ${SOFT}/tar-samtools/samtools-1.10
 RUN ./configure --with-libdeflate=yes CPPFLAGS=-I${SOFT}/libdeflate_1.6/include LDFLAGS=-L${SOFT}/libdeflate_1.6/lib --without-curses --prefix=${SOFT}/samtools_1.10 \
 	&& make \
-	&& make install
+	&& make install install-htslib
 
 
 # Samtools Release 1.10 2019-12-06
