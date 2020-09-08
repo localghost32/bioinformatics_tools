@@ -66,7 +66,8 @@ RUN ./configure --with-libdeflate=yes CPPFLAGS=-I${SOFT}/libdeflate_1.6/include 
 #RUN git init \
 #	&& git remote add origin https://github.com/samtools/samtools.git \
 #	&& git pull https://github.com/samtools/samtools.git 76877ea4e41cd9d9a7f045307485535c7da7422b \
-#	&& autoreconf \
+#	&& autoheader \
+#	&& autoconf -Wno-syntax \
 #	&& ./configure --with-htslib=${SOFT}/htslib_1.10.2 --prefix=${SOFT}/samtools_1.10 \
 #	&& make \
 #	&& make install \
@@ -97,7 +98,7 @@ RUN git init \
 	&& autoreconf -i -f \
 	&& ./configure --prefix=${SOFT}/libmaus2_2.0.750 \
 #	&& ./configure CPPFLAGS=-I{SOFT}/zlib_1.2.11/include  LDFLAGS=-L{SOFT}/zlib_1.2.11/lib  --prefix=${SOFT}/libmaus2_2.0.750 \
-	&& make \
+	&& make  all all-htslib \
 	&& rm -fr ${SOFT}/git-libmaus2
 
 # biobambam2 2.0.175 2020-08-29  
