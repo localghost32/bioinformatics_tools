@@ -40,7 +40,7 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.
 	&& make install install-htslib \
 	&& rm -fr ${SOFT}/tar-samtools
 
-ENV SAMTOOLS ${SOFT}/samtools_1.10/bin/samtools
+ENV SAMTOOLS ${SOFT}/samtools_1.10/bin
 
 # libmaus2 release 2.0.750 2020-09-02
 WORKDIR ${SOFT}/tar-libmaus2
@@ -63,8 +63,9 @@ RUN git init \
 	&& make install \
 	&& rm -fr ${SOFT}/git-biobambam2
 
-# ПРОВЕРИТЬ ПУТЬ!
-#ENV BIOBAMBAM2 ${SOFT}/biobambam2_2.0.175/bin/
-#ENV PATH ["/soft/samtools_1.10/bin/","/soft/biobambam2_2.0.175/bin/"]
+WORKDIR ${SOFT}/
+
+ENV BIOBAMBAM2 ${SOFT}/biobambam2_2.0.175/bin
+ENV PATH /soft/samtools_1.10/bin /soft/biobambam2_2.0.175/bin
 
 CMD ["bash"]
