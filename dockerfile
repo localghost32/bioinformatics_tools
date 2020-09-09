@@ -50,6 +50,7 @@ RUN wget https://gitlab.com/german.tischler/libmaus2/-/archive/2.0.750-release-2
 	&& cd ${SOFT}/tar-libmaus2/libmaus2-2.0.750-release-20200903115526 \
 	&& ./configure --prefix=${SOFT}/libmaus2_2.0.750 \
 	&& make \
+	&& make install \
 	&& rm -fr ${SOFT}/tar-libmaus2
 
 # biobambam2 2.0.175 2020-08-29  
