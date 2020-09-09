@@ -63,9 +63,8 @@ RUN git init \
 	&& make install \
 	&& rm -fr ${SOFT}/git-biobambam2
 
-WORKDIR ${SOFT}/
-
 ENV BIOBAMBAM2 ${SOFT}/biobambam2_2.0.175/bin
-ENV PATH /soft/samtools_1.10/bin /soft/biobambam2_2.0.175/bin
+ENV PATH="/soft/samtools_1.10/bin:${PATH}" 
+ENV PATH="/soft/biobambam2_2.0.175/bin:${PATH}"
 
 CMD ["bash"]
