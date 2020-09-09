@@ -1,5 +1,5 @@
 ################
-# Dockerfile with samtools & biobambam2
+# Dockerfile with samtools (htslib, libdeflate) & biobambam2 (libmaus2)
 # Based on Ubuntu 18.04
 ################
 
@@ -40,7 +40,7 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.
 	&& make install install-htslib 
 ENV SAMTOOLS ${SOFT}/samtools_1.10/bin
 
-# libmaus2 release 2.0.750 2020-09-02
+# libmaus2 release 2.0.750 2020-09-02 (install for biobambam2)
 WORKDIR ${SOFT}/tar-libmaus2
 RUN wget https://gitlab.com/german.tischler/libmaus2/-/archive/2.0.750-release-20200903115526/libmaus2-2.0.750-release-20200903115526.tar.bz2 \
 	&& mkdir ${SOFT}/libmaus2_2.0.750 \
