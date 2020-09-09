@@ -4,7 +4,7 @@ IT_Junior_task01_with_restrictions_v04
 #### Author: Boris Belyaev belbor1@gmail.com
 
 #### Description
-In dockerfile you find contauiner based on ubuntu 18.04, which includes speсial  bioinformatic programs: 
+In dockerfile you find container based on ubuntu 18.04, which includes speсial  bioinformatic programs: 
 samtools, biobambam2 and also requaired libraries and tools.
 
 #### Installation
