@@ -28,7 +28,29 @@ RUN apt-get update && apt-get install -y \
 	wget \
 	build-essential \
 	pkg-config
-	
+
+# libdeflate v1.6 2020-05-13 https://github.com/ebiggers/libdeflate/tree/v1.6
+WORKDIR ${SOFT}/git-libdeflate
+RUN git init \
+	&& git remote add origin https://github.com/ebiggers/libdeflate.git \
+	&& git pull https://github.com/ebiggers/libdeflate.git 753d4a1a625efb478f845f1c4d3869a41f710ae5 \
+	&& mkdir ${SOFT}/libdeflate_1.6 \
+	&& make --makefile=${SOFT}/git-libdeflate/Makefile \
+	&& make install PREFIX=${SOFT}/libdeflate_1.6 
+ENV LIBDEFLATE ${SOFT}/libdeflate_1.6/bin
+
+# htslib release 1.10.2 2019-12-19  
+WORKDIR ${SOFT}/tar-htslib
+RUN wget https://github.com/samtools/htslib/releases/download/1.10.2/htslib-1.10.2.tar.bz2 \
+	&& mkdir ${SOFT}/htslib_1.10.2 \
+	&& tar -xvjf ${SOFT}/tar-htslib/htslib-1.10.2.tar.bz2 \
+	&& cd ${SOFT}/tar-htslib/htslib-1.10.2 \
+	&& autoreconf \
+	&& ./configure LDFLAGS=-L${SOFT}/libdeflate_1.6/lib CPPFLAGS=-I${SOFT}/libdeflate_1.6/include --with-libdeflate --prefix=${SOFT}/htslib_1.10.2 \
+	&& make \
+	&& make install  
+ENV HTSLIB ${SOFT}/htslib_1.10.2/bin
+
 # Samtools release 1.10 2019-12-06  
 WORKDIR ${SOFT}/tar-samtools
 RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.10.tar.bz2 \
@@ -61,8 +83,10 @@ RUN git init \
 ENV BIOBAMBAM2 ${SOFT}/biobambam2_2.0.175/bin
 
 WORKDIR ${SOFT}
-RUN rm -fr ${SOFT}/tar-samtools ${SOFT}/tar-libmaus2 ${SOFT}/git-biobambam2
+RUN rm -fr ${SOFT}/tar-samtools ${SOFT}/tar-libmaus2 ${SOFT}/git-biobambam2 ${SOFT}/git-libdeflate ${SOFT}/tar-htslib
 ENV PATH="/soft/samtools_1.10/bin:${PATH}" 
 ENV PATH="/soft/biobambam2_2.0.175/bin:${PATH}"
+ENV PATH="/soft/libdeflate_1.6/bin:${PATH}"
+ENV PATH="/soft/htslib_1.10.2/bin:${PATH}"
 
 CMD ["bash"]
