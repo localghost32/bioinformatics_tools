@@ -38,6 +38,7 @@ RUN git init \
 	&& make --makefile=${SOFT}/git-libdeflate/Makefile \
 	&& make install PREFIX=${SOFT}/libdeflate_1.6 
 ENV LIBDEFLATE ${SOFT}/libdeflate_1.6/bin
+ENV PATH="${SOFT}/libdeflate_1.6/bin:${PATH}"
 
 # htslib release 1.10.2 2019-12-19  
 WORKDIR ${SOFT}/tar-htslib
@@ -49,7 +50,8 @@ RUN wget https://github.com/samtools/htslib/releases/download/1.10.2/htslib-1.10
 	&& ./configure LDFLAGS=-L${SOFT}/libdeflate_1.6/lib CPPFLAGS=-I${SOFT}/libdeflate_1.6/include --with-libdeflate --prefix=${SOFT}/htslib_1.10.2 \
 	&& make \
 	&& make install  
-ENV HTSLIB ${SOFT}/htslib_1.10.2/bin
+ENV HTSLIB ${SOFT}/htslib_1.10.2/bin/htsfile
+ENV PATH="${SOFT}/htslib_1.10.2/bin:${PATH}"
 
 # Samtools release 1.10 2019-12-06  
 WORKDIR ${SOFT}/tar-samtools
@@ -60,7 +62,8 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.
 	&& ./configure --without-curses --prefix=${SOFT}/samtools_1.10 \
 	&& make all all-htslib \
 	&& make install install-htslib 
-ENV SAMTOOLS ${SOFT}/samtools_1.10/bin
+ENV SAMTOOLS ${SOFT}/samtools_1.10/bin/samtools
+ENV PATH="${SOFT}/samtools_1.10/bin:${PATH}" 
 
 # libmaus2 release 2.0.750 2020-09-02 (install for biobambam2)
 WORKDIR ${SOFT}/tar-libmaus2
@@ -81,12 +84,9 @@ RUN git init \
 	&& ./configure --with-libmaus2=${SOFT}/libmaus2_2.0.750 --prefix=${SOFT}/biobambam2_2.0.175 \
 	&& make install 
 ENV BIOBAMBAM2 ${SOFT}/biobambam2_2.0.175/bin
+ENV PATH="${SOFT}/biobambam2_2.0.175/bin:${PATH}"
 
 WORKDIR ${SOFT}
 RUN rm -fr ${SOFT}/tar-samtools ${SOFT}/tar-libmaus2 ${SOFT}/git-biobambam2 ${SOFT}/git-libdeflate ${SOFT}/tar-htslib
-ENV PATH="/soft/samtools_1.10/bin:${PATH}" 
-ENV PATH="/soft/biobambam2_2.0.175/bin:${PATH}"
-ENV PATH="/soft/libdeflate_1.6/bin:${PATH}"
-ENV PATH="/soft/htslib_1.10.2/bin:${PATH}"
 
 CMD ["bash"]
