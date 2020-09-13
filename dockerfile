@@ -29,15 +29,18 @@ RUN apt-get update && apt-get install -y \
 	build-essential \
 	pkg-config
 
-# libdeflate v1.6 2020-05-13 https://github.com/ebiggers/libdeflate/tree/v1.6
-WORKDIR ${SOFT}/git-libdeflate
-RUN git init \
-	&& git remote add origin https://github.com/ebiggers/libdeflate.git \
-	&& git pull https://github.com/ebiggers/libdeflate.git 753d4a1a625efb478f845f1c4d3869a41f710ae5 \
+# libdeflate v1.6 2020-05-13 
+WORKDIR ${SOFT}/tar-libdeflate
+RUN wget https://github.com/ebiggers/libdeflate/archive/v1.6.tar.gz \
+	&& tar -xvzf ${SOFT}/tar-libdeflate/v1.6.tar.gz \
+	&& cd ${SOFT}/tar-libdeflate/libdeflate-v1.6 \
 	&& mkdir ${SOFT}/libdeflate_1.6 \
 	&& make --makefile=${SOFT}/git-libdeflate/Makefile \
 	&& make install PREFIX=${SOFT}/libdeflate_1.6 
-ENV LIBDEFLATE ${SOFT}/libdeflate_1.6/bin
+
+ENV LIBDEFLATEGUNZIP ${SOFT}/libdeflate_1.6/bin/libdeflate-gunzip \
+	LIBDEFLATEGZIP ${SOFT}/libdeflate_1.6/bin/libdeflate-gzip 
+
 ENV PATH="${SOFT}/libdeflate_1.6/bin:${PATH}"
 
 # htslib release 1.10.2 2019-12-19  
@@ -50,7 +53,10 @@ RUN wget https://github.com/samtools/htslib/releases/download/1.10.2/htslib-1.10
 	&& ./configure LDFLAGS=-L${SOFT}/libdeflate_1.6/lib CPPFLAGS=-I${SOFT}/libdeflate_1.6/include --with-libdeflate --prefix=${SOFT}/htslib_1.10.2 \
 	&& make \
 	&& make install  
-ENV HTSLIB ${SOFT}/htslib_1.10.2/bin/htsfile
+ENV HTSFILE ${SOFT}/htslib_1.10.2/bin/htsfile \
+	BGZIP ${SOFT}/htslib_1.10.2/bin/bgzip \
+	TABIX ${SOFT}/htslib_1.10.2/bin/tabix 
+
 ENV PATH="${SOFT}/htslib_1.10.2/bin:${PATH}"
 
 # Samtools release 1.10 2019-12-06  
@@ -62,7 +68,9 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.
 	&& ./configure --without-curses --prefix=${SOFT}/samtools_1.10 \
 	&& make all all-htslib \
 	&& make install install-htslib 
+
 ENV SAMTOOLS ${SOFT}/samtools_1.10/bin/samtools
+
 ENV PATH="${SOFT}/samtools_1.10/bin:${PATH}" 
 
 # libmaus2 release 2.0.750 2020-09-02 (install for biobambam2)
@@ -76,14 +84,17 @@ RUN wget https://gitlab.com/german.tischler/libmaus2/-/archive/2.0.750-release-2
 	&& make install 
 
 # biobambam2 2.0.175 2020-08-29  
-WORKDIR ${SOFT}/git-biobambam2
-RUN git init \
-	&& git remote add origin https://gitlab.com/german.tischler/biobambam2.git \
-	&& git pull https://gitlab.com/german.tischler/biobambam2.git 45e4c6db8c9d7763c4e51875ee98048ee2f41223 \
+WORKDIR ${SOFT}/tar-biobambam2
+RUN wget https://gitlab.com/german.tischler/biobambam2/-/archive/2.0.175-release-20200827101416/biobambam2-2.0.175-release-20200827101416.tar.bz2 \
+	&& mkdir ${SOFT}/biobabmbam_2.0.175 \
+	&& tar -xvjf ${SOFT}/tar-biobambam2/biobambam2-2.0.175-release-20200827101416.tar.bz2 \
+	&& cd ${SOFT}/tar-samtools/biobambam2-2.0.175-release-20200827101416 \
 	&& autoreconf -i -f \
 	&& ./configure --with-libmaus2=${SOFT}/libmaus2_2.0.750 --prefix=${SOFT}/biobambam2_2.0.175 \
 	&& make install 
+
 ENV BIOBAMBAM2 ${SOFT}/biobambam2_2.0.175/bin
+
 ENV PATH="${SOFT}/biobambam2_2.0.175/bin:${PATH}"
 
 WORKDIR ${SOFT}
