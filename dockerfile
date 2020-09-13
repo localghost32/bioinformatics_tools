@@ -33,9 +33,9 @@ RUN apt-get update && apt-get install -y \
 WORKDIR ${SOFT}/tar-libdeflate
 RUN wget https://github.com/ebiggers/libdeflate/archive/v1.6.tar.gz \
 	&& tar -xvzf ${SOFT}/tar-libdeflate/v1.6.tar.gz \
-	&& cd ${SOFT}/tar-libdeflate/libdeflate-v1.6 \
+	&& cd ${SOFT}/tar-libdeflate/libdeflate-1.6 \
 	&& mkdir ${SOFT}/libdeflate_1.6 \
-	&& make --makefile=${SOFT}/git-libdeflate/Makefile \
+	&& make --makefile=${SOFT}/tar-libdeflate/libdeflate-1.6/Makefile \
 	&& make install PREFIX=${SOFT}/libdeflate_1.6 
 
 ENV LIBDEFLATEGUNZIP ${SOFT}/libdeflate_1.6/bin/libdeflate-gunzip \
@@ -88,7 +88,7 @@ WORKDIR ${SOFT}/tar-biobambam2
 RUN wget https://gitlab.com/german.tischler/biobambam2/-/archive/2.0.175-release-20200827101416/biobambam2-2.0.175-release-20200827101416.tar.bz2 \
 	&& mkdir ${SOFT}/biobabmbam_2.0.175 \
 	&& tar -xvjf ${SOFT}/tar-biobambam2/biobambam2-2.0.175-release-20200827101416.tar.bz2 \
-	&& cd ${SOFT}/tar-samtools/biobambam2-2.0.175-release-20200827101416 \
+	&& cd ${SOFT}/tar-biobambam2/biobambam2-2.0.175-release-20200827101416 \
 	&& autoreconf -i -f \
 	&& ./configure --with-libmaus2=${SOFT}/libmaus2_2.0.750 --prefix=${SOFT}/biobambam2_2.0.175 \
 	&& make install 
