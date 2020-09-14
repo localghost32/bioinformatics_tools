@@ -99,8 +99,6 @@ RUN wget https://gitlab.com/german.tischler/biobambam2/-/archive/2.0.175-release
 	&& make install \
 	&& rm -fr ${SOFT}/tar-biobambam2
 
-ENV BIOBAMBAM2 ${SOFT}/biobambam2_2.0.175/bin
-
 ENV PATH="${SOFT}/biobambam2_2.0.175/bin:${PATH}"
 
 WORKDIR ${SOFT}
