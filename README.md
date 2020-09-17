@@ -1,11 +1,11 @@
-## Test result
-IT_Junior_task01_with_restrictions_v04
+## Dockerfile 
+Docker container with tools for bioinfortmatics
 
 #### Author: Boris Belyaev belbor1@gmail.com
 
 #### Description
 In [dockerfile](dockerfile) you find container based on ubuntu 18.04, which includes speсial  bioinformatic programs: 
-samtools, biobambam2 and also requaired libraries and tools.
+samtools, biobambam2 and also requaired libraries and tools (htslib, libdeflate, libmaus2).
 
 #### Dependencies
 You must have [Docker](https://docs.docker.com/get-docker/) to build and run image.
