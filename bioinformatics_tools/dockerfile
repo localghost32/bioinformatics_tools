@@ -102,6 +102,5 @@ RUN wget https://gitlab.com/german.tischler/biobambam2/-/archive/2.0.175-release
 ENV PATH="${SOFT}/biobambam2_2.0.175/bin:${PATH}"
 
 WORKDIR ${SOFT}
-RUN 
 
 CMD ["bash"]
