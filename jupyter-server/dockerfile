@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y \
       
 WORKDIR jupyter-server
 
-RUN virtualenv jupyter \
-      && source jupyter/bin/activate
+RUN virtualenv python_serv \
+      && source python_serv/bin/activate
       
-RUN pip install jupyter
+RUN pip install jupyter \
+      && jupyter notebook --ip 0.0.0.0 --no-browser --port=53978
+      
+CMD ["bash"]
