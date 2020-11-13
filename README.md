@@ -13,15 +13,15 @@ You must have [Docker](https://docs.docker.com/get-docker/) to build and run ima
 #### Installation
 To build image on your host you should call: 
     
-    docker build https://github.com/localghost32/docker.git#master 
+    docker build https://github.com/localghost32/bioinformatics_tools.git#master 
    
 Dockerfile will be downloaded from master branch of repository:    
     
-    https://github.com/localghost32/docker.git
+    https://github.com/localghost32/bioinformatics_tools.git
 
 You can choose tag for image during building. It will create convenience:    
     
-    docker build https://github.com/localghost32/docker.git#master -t <your_tag>
+    docker build https://github.com/localghost32/bioinformatics_tools.git#master -t <your_tag>
 
 For more information see:    
     
